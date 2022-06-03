@@ -39,3 +39,12 @@ var diretoryTreeToObj = function(dir, callback) {
 };
 
 exports.diretoryTreeToObj = diretoryTreeToObj;
+
+
+// =============== 自分のURLを取得 ===============
+exports.getMyURL = function(req) {
+    // console.log(req.protocol);
+    // console.log(req.get('Host'));
+    // console.log(req.originalUrl);
+    return `${req.protocol}://${req.get('Host')}`;
+};

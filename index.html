@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <title>タイトル</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <div id="app">
+    <!------------- menu --------------->
+    <div id="menu">
+
+      <label>
+        <input type="radio" name="menu" v-model="view" value="1">
+        <p>music</p>
+      </label>
+      <label>
+        <input type="radio" name="menu" v-model="view" value="2">
+        <p>air</p>
+      </label>
+      <label>
+        <input type="radio" name="menu" v-model="view" value="3">
+        <p>car</p>
+      </label>
+      <label>
+        <input type="radio" name="menu" v-model="view" value="4">
+        <p>map</p>
+      </label>
+    </div>
+
+    <!------------- articles --------------->
+    <div id="articles">
+      <article v-show="view == 1">
+        <div id="albams">
+          <albam-template v-for="(albam, index) in albams" v-bind:key="albam.id" v-bind:albam="albam"></albam-template>
+        </div>
+      </article>
+
+      <article v-show="view == 2">air
+        <p>エアコン操作系のボタンとツマミ</p>
+      </article>
+
+      <article v-show="view == 3">car
+        <p>ロックや窓に関するボタンとツマミ</p>
+      </article>
+
+      <article v-show="view == 4">map
+        <p>現在地の出た地図をスクロールできる（大きな一枚絵でごまかす）</p>
+      </article>
+
+    </div>
+
+    <!------------- hidden --------------->
+    <audio id="player" controls autoplay></audio>
+
+  </div>
+
+
+
+  <!------------ js ------------>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js "></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js "></script>
+  <script src="index.js "></script>
+</body>
+
+</html>

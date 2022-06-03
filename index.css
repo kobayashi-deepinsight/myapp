@@ -1,0 +1,176 @@
+:root {
+    --trans: rgba(255, 255, 255, 0);
+    --black: #030303;
+    --black_trans: rgba(3, 3, 3, 0.5);
+    --gray: #333333;
+    --gray_trans: rgba(51, 51, 51, 0.5);
+    --lgray: #434343;
+    --lgray_trans: rgba(160, 160, 160, 0.3);
+    --white: #F1F1F1;
+    --white_trans: rgba(241, 241, 241, 0.8);
+    /* maincolor */
+    --maincolor: #F2640C;
+    --maincolor_trans: rgba(242, 100, 12, 0.5);
+    --lmaincolor: #F4833C;
+    --dmaincolor: #7F4400;
+    --white_maincolor: #F8B185;
+    /* orange */
+    --orange: #F2640C;
+    --orange_trans: rgba(242, 100, 12, 0.5);
+    --lorange: #F4833C;
+    --dorange: #7F4400;
+    --white_orange: #F8B185;
+    /* red */
+    --red: #FD3C2F;
+    --red_trans: rgba(253, 60, 47, 0.5);
+    --lred: #fc584c;
+    --dred: #b32c22;
+    --white_red: #fcb6b1;
+    /* green */
+    --green: #006400;
+    --green_trans: rgba(0, 204, 51, 0.5);
+    --lgreen: #74d68c;
+    --dgreen: #286637;
+    --white_green: #7acc8f;
+    --header_height: 60px;
+}
+
+body {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    color: white;
+}
+
+#app {
+    flex: 1;
+    margin: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#menu {
+    width: 26%;
+    display: flex;
+    flex-direction: column;
+}
+
+#menu > label {
+    flex: 1;
+    display: block;
+    border: 2px solid green;
+}
+
+#menu > label > p {
+    font-size: 30px;
+    text-align: center;
+
+}
+
+#menu [type=radio] {
+    display: none;
+}
+
+#articles {
+    flex: 1;
+    display: flex;
+}
+
+#articles > article {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.albam {
+    display: inline-block;
+    background-color: var(--lgray_trans);
+    margin: 10px;
+    padding: 10px;
+}
+
+.albam * {
+    pointer-events: none;
+}
+
+.albam.playing {
+    background: linear-gradient(-45deg, var(--orange), var(--white_trans), var(--green));
+    background-size: 400% 400%;
+    animation: gradient 5s linear infinite;
+}
+
+@keyframes gradient {
+    0% {
+    background-position: 0% 50%
+    }
+    50% {
+    background-position: 100% 50%
+    }
+    100% {
+    background-position: 50% 0%
+    }
+}
+
+.albam img {
+    width: 300px;
+    height: 300px;
+}
+
+.albam p {
+    font-size: 22px;
+    width: 300px;
+    margin: 0;
+    margin-bottom: 0;
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.scroll {
+    text-align : left;
+    overflow   : hidden;
+}
+
+.scroll a{
+    display     : inline-block;
+    padding-left: 100%;
+    white-space : nowrap;
+    line-height : 1em;
+    animation   : scrollAnime 6s linear infinite;
+}
+
+@keyframes scrollAnime{
+    0% { transform: translateX(0)}
+    100% { transform: translateX(-100%)}
+}
+
+
+/* scroll bar */
+
+::-webkit-scrollbar {
+    height: 16px;
+    width: 16px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 12px 21px var(--gray_trans);
+    border: solid 3px transparent;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: var(--gray_trans);
+}
+
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 21px 21px var(--orange);
+    border: solid 3px transparent;
+}
+
+#player {
+    display: none;
+}
