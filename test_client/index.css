@@ -61,8 +61,10 @@ body {
 
 #menu > label {
     flex: 1;
+    position: relative;
     display: block;
     border: 2px solid green;
+    background-color: var(--gray_trans);
 }
 
 #menu > label > p {
@@ -70,6 +72,16 @@ body {
     text-align: center;
 
 }
+
+#menu > label > img {
+    width: 180px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
 
 #menu [type=radio] {
     display: none;
