@@ -8,23 +8,28 @@
 </head>
 
 <body>
+  <!-- FIXME meters -->
+  <div id="meters">
+  </div>
+
   <div id="app">
+
     <!------------- menu --------------->
     <div id="menu">
 
-      <label>
+      <label v-bind:class='{active:view==1}'>
         <input type="radio" name="menu" v-model="view" value="1">
         <img src="./images/icon_music.png">
       </label>
-      <label>
+      <label v-bind:class='{active:view==2}'>
         <input type="radio" name="menu" v-model="view" value="2">
         <img src="./images/icon_wind.png">
       </label>
-      <label>
+      <label v-bind:class='{active:view==3}'>
         <input type="radio" name="menu" v-model="view" value="3">
         <img src="./images/icon_car.png">
       </label>
-      <label>
+      <label v-bind:class='{active:view==4}'>
         <input type="radio" name="menu" v-model="view" value="4">
         <img src="./images/icon_map2.png">
       </label>
@@ -33,8 +38,8 @@
     <!------------- articles --------------->
     <div id="articles">
       <article v-show="view == 1">
-        <div id="albams">
-          <albam-template v-for="(albam, index) in albams" v-bind:key="albam.id" v-bind:albam="albam"></albam-template>
+        <div id="albams_div">
+          <albams v-for="(albam, index) in albams" v-bind:key="albam.id" v-bind:albam="albam"></albams>
         </div>
       </article>
 
@@ -42,12 +47,15 @@
         <p>エアコン操作系のボタンとツマミ</p>
       </article>
 
-      <article v-show="view == 3">car
-        <p>ロックや窓に関するボタンとツマミ</p>
+      <article v-show="view == 3">
+        <div id="threediv">
+        </div>
       </article>
 
-      <article v-show="view == 4">map
-        <p>現在地の出た地図をスクロールできる（大きな一枚絵でごまかす）</p>
+      <article v-show="view == 4">
+        <div id="map">
+          <img src="./images/bigmap.png" />
+        </div>
       </article>
 
     </div>
@@ -55,7 +63,6 @@
     <!------------- audio --------------->
     <audio id="player" controls autoplay></audio>
     <div id="audio_controler">
-      <di>
     </div>
 
   </div>
@@ -66,7 +73,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js "></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js "></script>
-  <script src="index.js "></script>
+  <script src="index.js" type="module"></script>
 </body>
 
 </html>
