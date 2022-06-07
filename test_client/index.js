@@ -66,7 +66,7 @@ let perpCamera, renderer, mesh, scene, controls;
 
 const three = {
     init() {
-        var $container = $("#threediv");
+        var $container = $("#three_div");
         var render = function render() {
             renderer.clear();
             renderer.render(scene, perpCamera);
@@ -120,7 +120,7 @@ const three = {
         renderer.render(scene, perpCamera);
     },
     resize() {
-        var $container = $("#threediv");
+        var $container = $("#three_div");
         perpCamera.aspect = $container.width() / $container.height();
         perpCamera.updateProjectionMatrix();
         renderer.setSize($container.width(), $container.height());
@@ -147,10 +147,34 @@ Vue.component('albams', {
     }
 });
 
+// =========== air_control ===========
+Vue.component('hslider', {
+    template: `
+        <div class="hslider">
+            <img :src=imgSrc />
+            <div>
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <input type="range" min="0" max="100" value="50">
+            </div>
+        </div>
+    `,
+    props: [`imgSrc`, ],
+});
+
 new Vue({
     el: '#app',
     data: {
-        view: 1,
+        view: 2,
         albams: [],
     },
     mounted() {
