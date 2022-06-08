@@ -45,7 +45,7 @@ router.get('/list', function(req, res, next) {
                     songNames: [],
                     songUrls: []
                 };
-                albam["children"].forEach(function(file) {
+                albam["children"].sort().forEach(function(file) {
                     if (file["name"].match(mp3_reg)) {
                         musicUrl = `${hostURL}/${artist["name"]}/${albam["name"]}/${file["name"]}`;
                         rtnAlbamJson["songNames"].push(file["name"]);

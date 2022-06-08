@@ -44,8 +44,8 @@
       <article v-show="view == 1">
         <div id="albams_div">
           <albams v-for="(albam, index) in albams" :key="albam.id" :albam="albam"></albams>
-          <audio_con v-if="controllerEnable"></audio_con>
-          <div id="mordal" v-if="controllerEnable"></div>
+          <audio_con v-show="controllerEnable"></audio_con>
+          <div id="mordal" v-show="controllerEnable"></div>
           <div class="for_ktc_uv uv_1 ul" value=0></div>
           <div class="for_ktc_uv uv_1 ur" value=1></div>
           <div class="for_ktc_uv uv_1 dr" value=2></div>

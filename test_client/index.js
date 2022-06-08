@@ -17,24 +17,31 @@ jQuery.prototype.scrolToCenter = function() {
 // ===========================================================================
 const audioPlayer = {
     player: $("#player"),
-    que: [],
+    albam: {},
+    index: 0,
     init() {
         this.player.on(`ended`, () => {
             this.nextSong();
         });
     },
-    newQue(_audioUrlList) {
-        this.que = _audioUrlList;
-        this.nextSong();
+    newQue(_albam) {
+        this.albam = _albam;
+        this.index = 0;
+        this.play();
     },
     nextSong() {
-        if (this.que.length) {
-            this.player.attr('src', this.que.shift());
-            this.player[0].play();
-        }
+        this.index = (this.index + 1) % this.albam.songNames.length;
+        this.play();
     },
     prevSong() {
-        log("audioPlayer: prevSong");
+        this.index = (this.index + this.albam.songNames.length - 1) % this.albam.songNames.length;
+        this.play();
+    },
+    play() {
+        this.player.attr('src', this.albam.songUrls.at(this.index));
+        this.player[0].play();
+        var txt = this.albam.name + " - " + this.albam.artist + " : " + this.albam.songNames.at(this.index);
+        log(txt);
     },
     startPause() {
         if (this.player[0].paused) {
@@ -47,12 +54,22 @@ const audioPlayer = {
     },
     mute() {
         log("audioPlayer: mute")
+        this.player[0].muted = !this.player[0].muted;
+        if (this.player[0].muted) {
+            $("#mute").addClass("active");
+        } else {
+            $("#mute").removeClass("active");
+        }
     },
     volumeDown() {
         log("audioPlayer: volumeDown")
+        this.player[0].muted = false;
+        this.player[0].volume -= .2;
     },
     volumeUp() {
         log("audioPlayer: volumeUp")
+        this.player[0].muted = false;
+        this.player[0].volume += .2;
     },
 }
 
@@ -186,8 +203,7 @@ Vue.component('albams', {
         onClick: function(event) {
             $(".albam").removeClass("playing");
             $(event.target).addClass("playing");
-            audioPlayer.newQue(this.albam.songUrls);
-            log("audioPlayer: " + this.albam.artist + " - " + this.albam.name);
+            audioPlayer.newQue(this.albam);
         }
     }
 });
@@ -352,10 +368,8 @@ $(() => {
     });
 
     $(document).on("mouseup", function() {
-        if (3 == event.which) {
-            $("#audio_con img:hover").trigger("click");
-            app.controllerEnable = false;
-        }
+        $("#audio_con img:hover").trigger("click");
+        app.controllerEnable = false;
     });
     // #########################
 });

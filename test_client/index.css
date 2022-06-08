@@ -248,8 +248,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 700px;
-    height: 500px;
+    width: 800px;
+    height: 700px;
     z-index: 1000;
 }
 
@@ -269,7 +269,8 @@ body {
     user-select: none;
 }
 
-#audio_con img:hover {
+#audio_con img:hover,
+#audio_con img.active {
     background-color: var(--orange);
 }
 
@@ -313,6 +314,12 @@ body {
 
 
 /* ============= map =============== */
+
+#map {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
 
 #map img {
     pointer-events: none;
