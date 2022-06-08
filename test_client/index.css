@@ -47,7 +47,7 @@ body {
 }
 
 #meters {
-    height: 200px;
+    height: 100px;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -72,7 +72,7 @@ body {
     flex-direction: column;
 }
 
-#menu > label {
+#menu>label {
     flex: 1;
     position: relative;
     display: block;
@@ -80,18 +80,17 @@ body {
     background-color: var(--gray_trans);
 }
 
-#menu > label.active {
+#menu>label.active {
     background-color: var(--white);
 }
 
-#menu > label > p {
+#menu>label>p {
     font-size: 30px;
     text-align: center;
-
 }
 
-#menu > label > img {
-    width: 180px;
+#menu>label>img {
+    width: 140px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -102,10 +101,15 @@ body {
     display: none;
 }
 
-#articles > article {
+#articles>article {
     width: 100%;
     height: 100%;
     display: flex;
+}
+
+#articles>article>div {
+    margin: 20px auto;
+    width: 94%;
     overflow: auto;
 }
 
@@ -128,13 +132,13 @@ body {
 
 @keyframes gradient {
     0% {
-    background-position: 0% 50%
+        background-position: 0% 50%
     }
     50% {
-    background-position: 100% 50%
+        background-position: 100% 50%
     }
     100% {
-    background-position: 50% 0%
+        background-position: 50% 0%
     }
 }
 
@@ -155,21 +159,25 @@ body {
 }
 
 .scroll {
-    text-align : left;
-    overflow   : hidden;
+    text-align: left;
+    overflow: hidden;
 }
 
-.scroll a{
-    display     : inline-block;
+.scroll a {
+    display: inline-block;
     padding-left: 100%;
-    white-space : nowrap;
-    line-height : 1em;
-    animation   : scrollAnime 6s linear infinite;
+    white-space: nowrap;
+    line-height: 1em;
+    animation: scrollAnime 6s linear infinite;
 }
 
-@keyframes scrollAnime{
-    0% { transform: translateX(0)}
-    100% { transform: translateX(-100%)}
+@keyframes scrollAnime {
+    0% {
+        transform: translateX(0)
+    }
+    100% {
+        transform: translateX(-100%)
+    }
 }
 
 
@@ -194,31 +202,123 @@ body {
     border: solid 3px transparent;
 }
 
+
 /* =========== player ============= */
+
 #player {
     display: none;
 }
 
+
 /* ============= map =============== */
-#map {
-    margin: 20px auto;
-    width: 94%;
-    overflow: auto;
-}
 
 #map img {
     pointer-events: none;
 }
 
 #map::-webkit-scrollbar {
-    display:none;
+    display: none;
 }
 
 
 /* ============= three ============= */
-#threediv {
-    margin: 20px auto;
-    width: 94%;
-    overflow: auto;
+
+
+/* ============= air ============== */
+
+#air_control {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     background-color: var(--gray_trans);
+}
+
+#air_tempereture_div,
+#air_power_div {
+    height: 26%;
+    margin: 0 10%;
+    display: flex;
+    position: relative;
+}
+
+#air_toggles_div {
+    flex: 1;
+    width: 100%;
+}
+
+
+/* ----------- hslider ----------- */
+
+.hslider {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    position: relative;
+}
+
+.hslider>img {
+    display: inline-block;
+    margin: 40px;
+}
+
+.hslider>div {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    position: relative;
+}
+
+.hslider input[type=range] {
+    appearance: none;
+    width: 100%;
+    height: 16px;
+    margin: auto 0;
+    border-radius: 2px;
+    border: none;
+    background-color: var(--lgray);
+    box-shadow: 4px 4px 6px 0 var(--black_trans) inset;
+    z-index: 100;
+}
+
+.hslider input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    width: 100px;
+    height: 130px;
+    background-color: var(--orange);
+    box-shadow: 0 0 16px 2px var(--orange_trans);
+    border-radius: 16px;
+}
+
+.hslider ul {
+    list-style: none;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 80px;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-around;
+}
+
+.hslider li {
+    display: inline-block;
+    padding: 0;
+    height: 100%;
+    width: 4px;
+    background-color: var(--white);
+    border-bottom: 3px solid var(--white_trans);
+    z-index: 1;
+}
+
+.hslider li:first-child {
+    margin-left: 30px;
+}
+
+.hslider li:last-child {
+    margin-right: 30px;
 }

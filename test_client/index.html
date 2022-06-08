@@ -37,21 +37,42 @@
 
     <!------------- articles --------------->
     <div id="articles">
+
+      <!-- ================= music ================= -->
       <article v-show="view == 1">
         <div id="albams_div">
-          <albams v-for="(albam, index) in albams" v-bind:key="albam.id" v-bind:albam="albam"></albams>
+          <albams v-for="(albam, index) in albams" :key="albam.id" :albam="albam"></albams>
         </div>
       </article>
 
-      <article v-show="view == 2">air
-        <p>エアコン操作系のボタンとツマミ</p>
+      <!-- ================= air ================= -->
+      <article v-show="view == 2">
+        <div id="air_control">
+          <div id="air_tempereture_div">
+            <hslider img-src="./images/air_icons/温度.png"></hslider>
+          </div>
+
+          <div id="air_toggles_div">
+            <!-- <img src="./images/air_icons/ヒート.png" /> -->
+            <!-- <img src="./images/air_icons/AC.png" /> -->
+            <!-- <img src="./images/air_icons/オート.png" /> -->
+            <!-- <img src="./images/air_icons/内気切り替え.png" /> -->
+            <!-- <img src="./images/air_icons/曇り止め.png" /> -->
+          </div>
+
+          <div id="air_power_div">
+            <hslider img-src="./images/air_icons/風量.png"></hslider>
+          </div>
+        </div>
       </article>
 
+      <!-- ================= around ================= -->
       <article v-show="view == 3">
-        <div id="threediv">
+        <div id="three_div">
         </div>
       </article>
 
+      <!-- ================= map ================= -->
       <article v-show="view == 4">
         <div id="map">
           <img src="./images/bigmap.png" />
