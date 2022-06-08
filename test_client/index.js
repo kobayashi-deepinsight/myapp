@@ -1,6 +1,10 @@
 const SERVER = "http://localhost:3000";
 const API_ALBAMLIST = SERVER + "/samples/list";
 
+let log = (text) => {
+    $("#log").html(text);
+}
+
 jQuery.prototype.scrolToCenter = function() {
     var maxScrollLeft = $(this)[0].scrollWidth - $(this)[0].clientWidth;
     var maxScrollTop = $(this)[0].scrollHeight - $(this)[0].clientHeight;
@@ -29,15 +33,55 @@ const audioPlayer = {
             this.player[0].play();
         }
     },
+    prevSong() {
+        log("audioPlayer: prevSong");
+    },
     startPause() {
         if (this.player[0].paused) {
             this.player[0].play();
+            log("audioPlayer: play");
         } else {
             this.player[0].pause();
+            log("audioPlayer: pause");
         }
     },
-
+    mute() {
+        log("audioPlayer: mute")
+    },
+    volumeDown() {
+        log("audioPlayer: volumeDown")
+    },
+    volumeUp() {
+        log("audioPlayer: volumeUp")
+    },
 }
+
+// ============ audio_con ==============
+Vue.component('audio_con', {
+    template: `
+        <div id="audio_con">
+            <img id="start_pause" src="./images/controller/start_pause.png" @click=start_pause>
+            <img id="mute" src="./images/controller/mute.png" @click=mute>
+            <img id="next" src="./images/controller/next.png" @click=next>
+            <img id="prev" src="./images/controller/prev.png" @click=prev>
+        </div>
+    `,
+    props: {},
+    methods: {
+        start_pause: function(event) {
+            audioPlayer.startPause();
+        },
+        mute: function(event) {
+            audioPlayer.mute();
+        },
+        next: function(event) {
+            audioPlayer.nextSong();
+        },
+        prev: function(event) {
+            audioPlayer.prevSong();
+        },
+    }
+});
 
 // ===========================================================================
 // mapControl
@@ -131,7 +175,7 @@ const three = {
 // ========== albams ============
 Vue.component('albams', {
     template: `
-        <div class="albam" v-on:click="onClick">
+        <div class="albam" @click="onClick">
             <img v-bind:src=albam.artwork>
             <p>{{ albam.name }}</p>
             <p>{{ albam.artist }}</p>
@@ -143,11 +187,12 @@ Vue.component('albams', {
             $(".albam").removeClass("playing");
             $(event.target).addClass("playing");
             audioPlayer.newQue(this.albam.songUrls);
+            log("audioPlayer: " + this.albam.artist + " - " + this.albam.name);
         }
     }
 });
 
-// =========== air_control ===========
+// =========== hslider ===========
 Vue.component('hslider', {
     template: `
         <div class="hslider">
@@ -164,18 +209,46 @@ Vue.component('hslider', {
                     <li></li>
                     <li></li>
                 </ul>
-                <input type="range" min="0" max="100" value="50">
+                <input type="range" @change="onChange" min="0" max="100" value="50">
             </div>
         </div>
     `,
-    props: [`imgSrc`, ],
+    props: [`imgSrc`, `name`, ],
+    methods: {
+        onChange: function(event) {
+            log(this.name + ": " + $(event.target).val());
+        }
+    }
 });
 
-new Vue({
+
+// =========== toggle ===========
+Vue.component('toggle', {
+    template: `
+        <div class="toggle btn3" @click="onClick">
+            <img :src=imgSrc />
+            <div class="lamp" :class="{active:isActive}"></div>
+        </div>
+    `,
+    props: {
+        imgSrc: String,
+        btnName: String,
+        isActive: Boolean,
+    },
+    methods: {
+        onClick: function(event) {
+            this.isActive = !this.isActive;
+            log(this.btnName + ": " + this.isActive);
+        }
+    }
+});
+
+const app = new Vue({
     el: '#app',
     data: {
-        view: 2,
+        view: 1,
         albams: [],
+        controllerEnable: false
     },
     mounted() {
         fetch(API_ALBAMLIST)
@@ -209,4 +282,80 @@ $(() => {
     audioPlayer.init();
     mapControl.init();
     three.init();
+
+
+    let uv1stack = [-1, -1, -1, -1, -1, -1];
+    $(document).on("mousemove", (event) => {
+        var x = event.pageX;
+        var y = event.pageY;
+        var elems = document.elementsFromPoint(x, y);
+        elems.forEach((elem) => {
+            elem = $(elem);
+            if (elem.hasClass("uv_1")) {
+                var v = parseInt(elem.attr("value"));
+                if (uv1stack.at(-1) != v) {
+                    uv1stack.shift();
+                    uv1stack.push(v);
+
+                    // 時計回りに行ってたら
+                    var next = (uv1stack.at(0) + 1) % 4;
+                    var flag = true;
+                    for (let i = 1; i < uv1stack.length; i++) {
+                        if (next == uv1stack.at(i)) {
+                            next = (uv1stack.at(i) + 1) % 4;
+                        } else {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        audioPlayer.volumeUp();
+                        uv1stack = [-1, -1, -1, -1, -1, -1];
+                    }
+
+                    // 反時計回りに行ってたら
+                    // 0 -> 3 -> 2 -> 1 -> 0 ...
+                    var next = (uv1stack.at(0) + 3) % 4;
+                    var flag = true;
+                    for (let i = 1; i < uv1stack.length; i++) {
+                        if (next == uv1stack.at(i)) {
+                            next = (uv1stack.at(i) + 3) % 4;
+                        } else {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        audioPlayer.volumeDown();
+                        uv1stack = [-1, -1, -1, -1, -1, -1];
+                    }
+                }
+            }
+        });
+    });
+
+    // $(".uv_2").on("mousedown", (event) => {
+
+    // #### マウス用のダミー ####
+    $(document).on("mousedown", (event) => {
+        if (3 == event.which) {
+            var x = event.pageX;
+            var y = event.pageY;
+            var elems = document.elementsFromPoint(x, y);
+            elems.forEach((elem) => {
+                if ($(elem).hasClass("uv_2")) {
+                    app.controllerEnable = true;
+                    $(".uv_2")
+                }
+            });
+        }
+    });
+
+    $(document).on("mouseup", function() {
+        if (3 == event.which) {
+            $("#audio_con img:hover").trigger("click");
+            app.controllerEnable = false;
+        }
+    });
+    // #########################
 });
