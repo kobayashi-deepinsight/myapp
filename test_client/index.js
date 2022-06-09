@@ -52,24 +52,44 @@ const audioPlayer = {
             log("audioPlayer: pause");
         }
     },
-    mute() {
-        log("audioPlayer: mute")
-        this.player[0].muted = !this.player[0].muted;
-        if (this.player[0].muted) {
+    mute(b) {
+        this.player[0].muted = b;
+        log("audioPlayer: mute -> " + b);
+        if (b) {
             $("#mute").addClass("active");
         } else {
             $("#mute").removeClass("active");
         }
     },
+    muteToggle() {
+        var b = !this.player[0].muted;
+        this.player[0].muted = b;
+        log("audioPlayer: mute -> " + b);
+        if (b) {
+            $("#mute").addClass("active");
+        } else {
+            $("#mute").removeClass("active");
+        }
+        return b;
+    },
     volumeDown() {
         log("audioPlayer: volumeDown")
-        this.player[0].muted = false;
-        this.player[0].volume -= .2;
+        this.mute(false);
+        try {
+            this.player[0].volume -= .2;
+        } catch (err) {
+            this.player[0].volume = 0;
+        }
+        log("audioPlayer: volumeDown -> " + Math.floor(100 * this.player[0].volume) + "%");
     },
     volumeUp() {
-        log("audioPlayer: volumeUp")
-        this.player[0].muted = false;
-        this.player[0].volume += .2;
+        this.mute(false);
+        try {
+            this.player[0].volume += .2;
+        } catch (err) {
+            this.player[0].volume = 1;
+        }
+        log("audioPlayer: volumeUp -> " + Math.floor(100 * this.player[0].volume) + "%");
     },
 }
 
@@ -83,13 +103,12 @@ Vue.component('audio_con', {
             <img id="prev" src="./images/controller/prev.png" @click=prev>
         </div>
     `,
-    props: {},
     methods: {
         start_pause: function(event) {
             audioPlayer.startPause();
         },
         mute: function(event) {
-            audioPlayer.mute();
+            audioPlayer.muteToggle();
         },
         next: function(event) {
             audioPlayer.nextSong();
